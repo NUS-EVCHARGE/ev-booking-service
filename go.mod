@@ -4,9 +4,7 @@ go 1.18
 
 require (
 	github.com/NUS-EVCHARGE/ev-user-service v0.0.0-20230825112143-7d331cc1ff3b
-	github.com/akhettar/gin-jwt-cognito v0.11.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.16.0
 	github.com/swaggo/files v1.0.1

@@ -16,9 +16,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user/get_user_info": {
+        "/booking": {
             "get": {
-                "description": "get user info by authentication header",
+                "description": "get booking by user",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,9 +26,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "booking"
                 ],
-                "summary": "Get User Info from AWS cognito",
+                "summary": "Get Booking by user",
                 "parameters": [
                     {
                         "type": "string",
@@ -39,9 +39,105 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "returns a user object",
+                        "description": "returns a booking object",
                         "schema": {
-                            "$ref": "#/definitions/dto.User"
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            }
+        },
+        "/booking/create_booking": {
+            "delete": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "booking id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
                         }
                     }
                 }
@@ -49,16 +145,27 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.User": {
+        "dto.Booking": {
             "type": "object",
             "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "e0014576@u.nus.edu"
+                "charger_id": {
+                    "type": "integer"
                 },
-                "username": {
-                    "type": "string",
-                    "example": "sweiyang"
+                "email": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "gorm.Model",
+                    "type": "integer"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         }
@@ -71,7 +178,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},
-	Title:            "User Service API",
+	Title:            "Booking Service API",
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	r  *gin.Engine
+	r *gin.Engine
 )
 
 func main() {
@@ -32,12 +32,10 @@ func main() {
 	}
 
 	// init db
-	if false {
-		err = dao.InitDB(configObj.Dsn)
-		if err != nil {
-			logrus.WithField("config", configObj).Error("failed to connect to database")
-			return
-		}
+	err = dao.InitDB(configObj.Dsn)
+	if err != nil {
+		logrus.WithField("config", configObj).Error("failed to connect to database")
+		return
 	}
 	controller.NewBookingController()
 	InitHttpServer(configObj.HttpAddress)
@@ -63,5 +61,8 @@ func registerHandler() {
 	// api versioning
 	v1 := r.Group("/api/v1")
 	// get user info handler
-	v1.POST("/booking/create_booking", handler.CreateBookingHandler)
+	v1.POST("/booking", handler.CreateBookingHandler)
+	v1.GET("/booking", handler.GetBookingHandler)
+	v1.PATCH("/booking/", handler.UpdateBookingHandler)
+	v1.DELETE("/booking/:id", handler.DeleteBookingHandler)
 }
