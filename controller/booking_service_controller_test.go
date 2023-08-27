@@ -85,7 +85,7 @@ func TestCreateBookingWhereStartTimeBeforeCurrentTime(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2023,8,27,10,50,0, 0,time.Local),
+			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -106,7 +106,7 @@ func TestGetBookingWhereUserDoesNotHaveBooking(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2023,8,27,10,50,0, 0,time.Local),
+			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -156,15 +156,14 @@ func TestUpdateBookingWhereStartTimeBeforeCurrentTime(t *testing.T) {
 			ID: 0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2023,8,27,10,50,0, 0,time.Local),
+			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Booking{actualBooking})
 	time.Sleep(time.Second)
-
-	actualBooking.StartTime = time.Date(2023,8,27,10,50,0, 0,time.Local)
+	actualBooking.StartTime = time.Date(2022,8,27,10,50,0, 0,time.Local)
 	actualBooking.EndTime = time.Now().Add(30*time.Minute)
 	err := BookingControllerObj.UpdateBooking(actualBooking)
 	assert.Equal(t, err, fmt.Errorf("start time cannot be before current time"))
@@ -177,7 +176,7 @@ func TestUpdateBookingWhereEndTimeBeforeStartTime(t *testing.T) {
 			ID: 0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2023,8,27,10,50,0, 0,time.Local),
+			StartTime: time.Now(),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -198,7 +197,7 @@ func TestUpdateBookingWhereEndTimeBeforeCurrentTime(t *testing.T) {
 			ID: 0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2023,8,27,10,50,0, 0,time.Local),
+			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -207,7 +206,7 @@ func TestUpdateBookingWhereEndTimeBeforeCurrentTime(t *testing.T) {
 	time.Sleep(time.Second)
 
 	actualBooking.StartTime = time.Now()
-	actualBooking.EndTime = time.Date(2023,8,27,10,50,0, 0,time.Local)
+	actualBooking.EndTime = time.Date(2022,8,27,10,50,0, 0,time.Local)
 	err := BookingControllerObj.UpdateBooking(actualBooking)
 	assert.Equal(t, err, fmt.Errorf("end time cannot be before current time"))
 }
