@@ -48,7 +48,7 @@ func CreateBookingHandler(c *gin.Context) {
 	//todo: convert to eum
 	booking.Status = "waiting"
 
-	err = controller.BookingControllerObj.CreateBooking(booking)
+	err = controller.BookingControllerObj.CreateBooking(booking, user)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating booking")

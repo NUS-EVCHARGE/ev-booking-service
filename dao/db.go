@@ -31,11 +31,6 @@ func (d *dbImpl) UpdateBookingEntry(booking dto.Booking) error {
 }
 
 func (d*dbImpl) CreateBookingEntry(booking dto.Booking) error {
-	var existingBooking []dto.Booking
-	results := d.DbController.Find(&existingBooking, "end_time > ?", booking.EndTime)
-	if results.RowsAffected != 0 {
-		return fmt.Errorf("there are overlapping bookings")
-	}
 	result := d.DbController.Create(&booking)
 	return result.Error
 }

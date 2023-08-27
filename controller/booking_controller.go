@@ -5,11 +5,10 @@ import (
 	"ev-booking-service/dto"
 	"fmt"
 	evu "github.com/NUS-EVCHARGE/ev-user-service/dto"
-	"time"
 )
 
 type BookingController interface {
-	CreateBooking(booking dto.Booking) error
+	CreateBooking(booking dto.Booking, user evu.User) error
 	GetBookingInfo(user evu.User) ([]dto.Booking, error)
 	UpdateBooking(booking dto.Booking) error
 	DeleteBooking(bookingId uint, email string) error
@@ -18,14 +17,22 @@ type BookingController interface {
 type BookingControllerImpl struct {
 }
 
-func (b* BookingControllerImpl) CreateBooking(booking dto.Booking) error {
+func (b* BookingControllerImpl) CreateBooking(booking dto.Booking, user evu.User) error {
 	//validation
-	if booking.StartTime.Unix() < time.Now().Unix() {
-		return fmt.Errorf("start time cannot be before current time")
+	if err := booking.Validate(); err != nil {
+		return err
 	}
-	if booking.StartTime.Unix() > booking.EndTime.Unix() {
-		return fmt.Errorf("start time cannot be after end time")
+
+	bookingList, err := b.GetBookingInfo(user)
+	if err != nil {
+		return err
 	}
+	for _, booking := range bookingList {
+		if booking.EndTime.Unix() > booking.StartTime.Unix() {
+			return fmt.Errorf("there are overlapping bookings")
+		}
+	}
+
 	return dao.Db.CreateBookingEntry(booking)
 }
 
@@ -34,11 +41,8 @@ func (b* BookingControllerImpl) GetBookingInfo(user evu.User) ([]dto.Booking, er
 }
 
 func (b* BookingControllerImpl) UpdateBooking(booking dto.Booking) error {
-	if booking.StartTime.Unix() < time.Now().Unix() {
-		return fmt.Errorf("start time cannot be before current time")
-	}
-	if booking.StartTime.Unix() > booking.EndTime.Unix() {
-		return fmt.Errorf("start time cannot be after end time")
+	if err := booking.Validate(); err != nil {
+		return err
 	}
 	return dao.Db.UpdateBookingEntry(booking)
 }

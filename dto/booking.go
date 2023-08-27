@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -16,4 +17,17 @@ type Booking struct {
 
 func (Booking) TableName() string {
 	return "booking_tab"
+}
+
+func (b *Booking) Validate() error {
+	if b.StartTime.Unix() < time.Now().Unix() {
+		return fmt.Errorf("start time cannot be before current time")
+	}
+	if b.EndTime.Unix() < time.Now().Unix() {
+		return fmt.Errorf("end time cannot be before current time")
+	}
+	if b.StartTime.Unix() > b.EndTime.Unix() {
+		return fmt.Errorf("start time cannot be after end time")
+	}
+	return nil
 }
