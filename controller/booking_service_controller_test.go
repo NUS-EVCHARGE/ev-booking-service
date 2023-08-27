@@ -20,7 +20,7 @@ func TestCreateBookingSuccess(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now(),
+			StartTime: time.Now().Add(time.Minute),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -45,7 +45,7 @@ func TestCreateBookingThatOverlaps(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now(),
+			StartTime: time.Now().Add(time.Minute),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -65,7 +65,7 @@ func TestCreateBookingWhereStartTimeAfterEndTime(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now().Add(15*time.Minute),
+			StartTime: time.Now().Add(time.Minute).Add(15*time.Minute),
 			EndTime:   time.Now(),
 			Status:    "",
 		}
@@ -129,7 +129,7 @@ func TestUpdateBookingSuccess(t *testing.T) {
 			ID: 0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now(),
+			StartTime: time.Now().Add(time.Minute),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
@@ -219,7 +219,7 @@ func TestDeleteBookingSuccess(t *testing.T) {
 			ID: 0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now(),
+			StartTime: time.Now().Add(time.Minute),
 			EndTime:   time.Now().Add(15*time.Minute),
 			Status:    "",
 		}
