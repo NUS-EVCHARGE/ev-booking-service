@@ -3,7 +3,6 @@ package main
 import (
 	"ev-booking-service/config"
 	"ev-booking-service/controller"
-	"ev-booking-service/dao"
 	_ "ev-booking-service/docs"
 	"ev-booking-service/handler"
 	"flag"
@@ -32,11 +31,11 @@ func main() {
 	}
 
 	// init db
-	err = dao.InitDB(configObj.Dsn)
-	if err != nil {
-		logrus.WithField("config", configObj).Error("failed to connect to database")
-		return
-	}
+	//err = dao.InitDB(configObj.Dsn)
+	//if err != nil {
+	//	logrus.WithField("config", configObj).Error("failed to connect to database")
+	//	return
+	//}
 	controller.NewBookingController()
 	InitHttpServer(configObj.HttpAddress)
 }
