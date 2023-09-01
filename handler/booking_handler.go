@@ -41,7 +41,7 @@ func CreateBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	booking.Email = user.Email
@@ -52,7 +52,7 @@ func CreateBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating booking")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, booking)
@@ -87,7 +87,7 @@ func GetBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error getting booking")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, bookingList)
@@ -121,7 +121,7 @@ func UpdateBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	booking.Email = user.Email
@@ -129,7 +129,7 @@ func UpdateBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("booking", booking).WithField("err", err).Error("error update booking")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, booking)
@@ -169,7 +169,7 @@ func DeleteBookingHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("booking", booking).WithField("err", err).Error("error update booking")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, CreateResponse("booking deletion success"))
