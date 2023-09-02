@@ -13,14 +13,25 @@ import (
 	"strconv"
 )
 
-//	@Summary		Create Booking by user
-//	@Description	create booking by user
-//	@Tags			booking
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Booking	"returns a booking object"
-//	@Router			/booking [post]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+// @Summary		Health Check
+// @Description 	perform health check status
+// @Tags 			Health Check
+// @Accept 		json
+// @Produce 		json
+// @Success 		200	{object}	map[string]interface{}	"returns a welcome message"
+func GetBookingServiceHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, CreateResponse("Welcome to ev-booking-service"))
+	return
+}
+
+// @Summary		Create Booking by user
+// @Description	create booking by user
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking [post]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func CreateBookingHandler(c *gin.Context) {
 	var (
 		user    userDto.User
@@ -59,14 +70,14 @@ func CreateBookingHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Get Booking by user
-//	@Description	get booking by user
-//	@Tags			booking
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Booking	"returns a booking object"
-//	@Router			/booking [get]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+// @Summary		Get Booking by user
+// @Description	get booking by user
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking [get]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func GetBookingHandler(c *gin.Context) {
 	var (
 		user        userDto.User
@@ -94,14 +105,14 @@ func GetBookingHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Create Booking by user
-//	@Description	create booking by user
-//	@Tags			booking
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Booking	"returns a booking object"
-//	@Router			/booking [patch]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+// @Summary		Create Booking by user
+// @Description	create booking by user
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking [patch]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func UpdateBookingHandler(c *gin.Context) {
 	var (
 		user    userDto.User
@@ -136,15 +147,15 @@ func UpdateBookingHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Create Booking by user
-//	@Description	create booking by user
-//	@Tags			booking
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Booking	"returns a booking object"
-//	@Router			/booking/create_booking [delete]
-//	@Param			authentication	header	string	yes		"jwtToken of the user"
-//	@Param			id				path	int		true	"booking id"
+// @Summary		Create Booking by user
+// @Description	create booking by user
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking/create_booking [delete]
+// @Param			authentication	header	string	yes		"jwtToken of the user"
+// @Param			id				path	int		true	"booking id"
 func DeleteBookingHandler(c *gin.Context) {
 	var (
 		user    userDto.User
