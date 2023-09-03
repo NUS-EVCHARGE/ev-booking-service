@@ -55,7 +55,7 @@ func registerHandler() {
 	//	@title		Booking Service API
 	//	@version	1.0
 	//	@schemes	http
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/booking/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.GET("/booking/home", handler.GetBookingServiceHandler)
 
 	// api versioning
