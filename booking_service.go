@@ -3,6 +3,7 @@ package main
 import (
 	"ev-booking-service/config"
 	"ev-booking-service/controller"
+	"ev-booking-service/dao"
 	_ "ev-booking-service/docs"
 	"ev-booking-service/handler"
 	"flag"
@@ -10,6 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"os"
 )
 
 var (
@@ -30,12 +32,19 @@ func main() {
 		return
 	}
 
-	// init db
-	//err = dao.InitDB(configObj.Dsn)
-	//if err != nil {
-	//	logrus.WithField("config", configObj).Error("failed to connect to database")
-	//	return
-	//}
+	var hostname string
+	dbHost := os.Getenv("DATABASE_HOST")
+	if dbHost != "" {
+		hostname = dbHost
+	} else {
+		hostname = configObj.Dsn // localhost
+	}
+
+	err = dao.InitDB(hostname)
+	if err != nil {
+		logrus.WithField("config", configObj).Error("failed to connect to database")
+		return
+	}
 	controller.NewBookingController()
 	InitHttpServer(configObj.HttpAddress)
 }
