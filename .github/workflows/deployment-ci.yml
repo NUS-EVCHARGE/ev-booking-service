@@ -24,7 +24,6 @@ env:
   # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: ev-booking-service           # set this to the name of the container in the
   # containerDefinitions section of your task definition
-  DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
 
 jobs:
   deploy:
@@ -63,6 +62,8 @@ jobs:
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
