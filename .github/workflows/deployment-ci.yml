@@ -24,6 +24,7 @@ env:
   # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: ev-booking-service           # set this to the name of the container in the
   # containerDefinitions section of your task definition
+  DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
 
 jobs:
   deploy:
