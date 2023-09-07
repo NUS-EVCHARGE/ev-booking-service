@@ -33,7 +33,7 @@ func main() {
 	}
 
 	var hostname string
-	secret := os.Getenv("database-secret")
+	secret := os.Getenv("MYSQL_PASSWORD")
 	if secret != "" {
 		hostname = "admin:" + secret + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	} else {

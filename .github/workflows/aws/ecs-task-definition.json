@@ -19,7 +19,7 @@
       "volumesFrom": [],
       "secrets": [
         {
-          "name": "database-secret",
+          "name": "MYSQL_PASSWORD",
           "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:021983356533:secret:rds!db-8ff5565a-53f0-4c4d-9253-1d2562a6d07e-OZBnLX"
         }
       ],
