@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"ev-booking-service/config"
 	"ev-booking-service/controller"
 	"ev-booking-service/dao"
@@ -18,6 +19,11 @@ var (
 	r *gin.Engine
 )
 
+type Database struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func main() {
 	var (
 		configFile string
@@ -33,9 +39,17 @@ func main() {
 	}
 
 	var hostname string
+
+	var database Database
 	secret := os.Getenv("MYSQL_PASSWORD")
-	if secret != "" {
-		hostname = "admin:" + secret + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	// Parse the JSON data into the struct
+	if err := json.Unmarshal([]byte(secret), &database); err != nil {
+		logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
+		return
+	}
+
+	if database.Password != "" {
+		hostname = "admin:" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	} else {
 		hostname = configObj.Dsn // localhost
 	}
