@@ -39,6 +39,9 @@ func main() {
 	} else {
 		hostname = configObj.Dsn // localhost
 	}
+	println("-------------------------------")
+	println(hostname)
+	println("-------------------------------")
 
 	err = dao.InitDB(hostname)
 	if err != nil {
