@@ -33,9 +33,9 @@ func main() {
 	}
 
 	var hostname string
-	dbHost := os.Getenv("DATABASE_HOST")
-	if dbHost != "" {
-		hostname = dbHost
+	secret := os.Getenv("database-secret")
+	if secret != "" {
+		hostname = "admin:" + secret + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	} else {
 		hostname = configObj.Dsn // localhost
 	}
