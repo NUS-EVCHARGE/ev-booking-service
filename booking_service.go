@@ -42,14 +42,16 @@ func main() {
 
 	var database Database
 	secret := os.Getenv("MYSQL_PASSWORD")
-	// Parse the JSON data into the struct
-	if err := json.Unmarshal([]byte(secret), &database); err != nil {
-		logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
-		return
+	if secret != "" {
+		// Parse the JSON data into the struct
+		if err := json.Unmarshal([]byte(secret), &database); err != nil {
+			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
+			return
+		}
 	}
 
 	if database.Password != "" {
-		hostname = "admin:" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+		hostname = database.Username + ":" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	} else {
 		hostname = configObj.Dsn // localhost
 	}
