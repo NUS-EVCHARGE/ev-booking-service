@@ -90,4 +90,5 @@ func registerHandler() {
 	v1.GET("/booking", handler.GetBookingHandler)
 	v1.PATCH("/booking/", handler.UpdateBookingHandler)
 	v1.DELETE("/booking/:id", handler.DeleteBookingHandler)
+	v1.GET("/booking/:id", handler.GetBookingIdHandler)
 }

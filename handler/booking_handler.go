@@ -105,6 +105,47 @@ func GetBookingHandler(c *gin.Context) {
 	return
 }
 
+// @Summary		Get Booking info by id
+// @Description	get booking info by id
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking [get]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+func GetBookingIdHandler(c *gin.Context) {
+	var (
+		//user    userDto.User
+		booking dto.Booking
+	)
+	tokenStr := c.GetHeader("Authentication")
+
+	// Get User information
+	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, CreateResponse("id but be an integer"))
+		return
+	}
+
+	booking, err = controller.BookingControllerObj.GetBookingIdInfo(uint(id))
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting booking")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	c.JSON(http.StatusOK, booking)
+	return
+}
+
 // @Summary		Create Booking by user
 // @Description	create booking by user
 // @Tags			booking
@@ -153,7 +194,7 @@ func UpdateBookingHandler(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Booking	"returns a booking object"
-// @Router			/booking/create_booking [delete]
+// @Router			/booking [delete]
 // @Param			authentication	header	string	yes		"jwtToken of the user"
 // @Param			id				path	int		true	"booking id"
 func DeleteBookingHandler(c *gin.Context) {

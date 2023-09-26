@@ -17,13 +17,13 @@ func (d *mockDbImpl) UpdateBookingEntry(booking dto.Booking) error {
 	return nil
 }
 
-func (d*mockDbImpl) CreateBookingEntry(booking dto.Booking) error {
+func (d *mockDbImpl) CreateBookingEntry(booking dto.Booking) error {
 	d.bookingList = append(d.bookingList, booking)
 	return nil
 }
 
-func (d*mockDbImpl) DeleteBookingEntry(booking dto.Booking) error {
-	if len(d.bookingList) < int(booking.ID) || len(d.bookingList) == 0{
+func (d *mockDbImpl) DeleteBookingEntry(booking dto.Booking) error {
+	if len(d.bookingList) < int(booking.ID) || len(d.bookingList) == 0 {
 		return fmt.Errorf("booking not found")
 	}
 	if len(d.bookingList) == 1 {
@@ -35,7 +35,7 @@ func (d*mockDbImpl) DeleteBookingEntry(booking dto.Booking) error {
 	return nil
 }
 
-func (d*mockDbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
+func (d *mockDbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
 	var (
 		bookingList []dto.Booking
 	)
@@ -45,6 +45,17 @@ func (d*mockDbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
 		}
 	}
 	return bookingList, nil
+}
+
+func (d *mockDbImpl) GetBookingIdEntry(id uint) (dto.Booking, error) {
+	if len(d.bookingList) < int(id) || len(d.bookingList) == 0 {
+		return dto.Booking{}, fmt.Errorf("booking not found")
+	}
+	if len(d.bookingList) == 1 {
+		return d.bookingList[0], nil
+	}
+
+	return d.bookingList[int(id)], nil
 }
 
 func NewMockDatabase(bookingList []dto.Booking) Database {
