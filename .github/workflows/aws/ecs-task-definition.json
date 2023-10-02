@@ -4,7 +4,7 @@
       "name": "ev-booking-service",
       "image": "",
       "cpu": 0,
-      "memoryReservation": 126,
+      "memoryReservation": 64,
       "portMappings": [
         {
           "name": "ev-booking-service-8080-tcp",
