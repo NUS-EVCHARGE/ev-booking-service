@@ -13,16 +13,29 @@ jobs:
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+        run: |
+              go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+              pwd
+              ls -al
+      - uses: actions/upload-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+          retention-days: 5
 
 
   sonar:
     needs: unit-test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@master
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          name: artifact
+          path: ${{ github.workspace }}/
+      - name: check contents
+        run: |
+          pwd
+          ls -al
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
