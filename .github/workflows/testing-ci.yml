@@ -62,6 +62,6 @@ jobs:
           docker_name: 'owasp/zap2docker-stable'
           # Target URL
           target: "http://localhost:8080"
-          fail_action: false
-          allow_issue_writing: false
+          fail_action: true
+          allow_issue_writing: true
           issue_title: Security Tests
