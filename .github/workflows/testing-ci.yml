@@ -13,4 +13,55 @@ jobs:
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: go test -cover -v ./...
+        run: |
+              go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+              pwd
+              ls -al
+      - uses: actions/upload-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+          retention-days: 5
+
+
+  sonar:
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+      - name: check contents
+        run: |
+          pwd
+          ls -al
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Needed to push to SonarCloud
+
+  dast:
+    permissions: write-all
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+
+      - name: run docker image
+        run: docker run -d -p 8080:8080 $(docker build -q -f Dockerfile .)
+
+      - name: OWASP ZAP
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # Target URL
+          target: "http://localhost:8080"
+          fail_action: false
+          allow_issue_writing: true
+          issue_title: Security Tests

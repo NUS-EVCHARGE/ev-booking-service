@@ -1,21 +1,30 @@
 package main
 
 import (
+	"encoding/json"
 	"ev-booking-service/config"
 	"ev-booking-service/controller"
 	"ev-booking-service/dao"
 	_ "ev-booking-service/docs"
 	"ev-booking-service/handler"
 	"flag"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"os"
+	"time"
 )
 
 var (
 	r *gin.Engine
 )
+
+type Database struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
 func main() {
 	var (
@@ -31,11 +40,28 @@ func main() {
 		return
 	}
 
-	// init db
-	err = dao.InitDB(configObj.Dsn)
+	var hostname string
+
+	var database Database
+	secret := os.Getenv("MYSQL_PASSWORD")
+	if secret != "" {
+		// Parse the JSON data into the struct
+		if err := json.Unmarshal([]byte(secret), &database); err != nil {
+			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
+			return
+		}
+	}
+
+	if database.Password != "" {
+		hostname = database.Username + ":" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	} else {
+		hostname = configObj.Dsn // localhost
+	}
+
+	err = dao.InitDB(hostname)
 	if err != nil {
 		logrus.WithField("config", configObj).Error("failed to connect to database")
-		return
+		//return
 	}
 	controller.NewBookingController()
 	InitHttpServer(configObj.HttpAddress)
@@ -43,6 +69,15 @@ func main() {
 
 func InitHttpServer(httpAddress string) {
 	r = gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*", "http://localhost:3000"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "authentication"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	registerHandler()
 
 	if err := r.Run(httpAddress); err != nil {
@@ -56,7 +91,8 @@ func registerHandler() {
 	//	@title		Booking Service API
 	//	@version	1.0
 	//	@schemes	http
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/booking/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("/booking/home", handler.GetBookingServiceHandler)
 
 	// api versioning
 	v1 := r.Group("/api/v1")
@@ -65,4 +101,5 @@ func registerHandler() {
 	v1.GET("/booking", handler.GetBookingHandler)
 	v1.PATCH("/booking/", handler.UpdateBookingHandler)
 	v1.DELETE("/booking/:id", handler.DeleteBookingHandler)
+	v1.GET("/booking/:id", handler.GetBookingIdHandler)
 }

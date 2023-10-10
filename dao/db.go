@@ -12,13 +12,15 @@ type Database interface {
 	UpdateBookingEntry(booking dto.Booking) error
 	DeleteBookingEntry(booking dto.Booking) error
 	GetAllBookingEntry(email string) ([]dto.Booking, error)
+	GetBookingIdEntry(id uint) (dto.Booking, error)
 }
+
 var (
 	Db Database
 )
 
 type dbImpl struct {
-	Dsn string
+	Dsn          string
 	DbController *gorm.DB
 }
 
@@ -30,12 +32,12 @@ func (d *dbImpl) UpdateBookingEntry(booking dto.Booking) error {
 	return results.Error
 }
 
-func (d*dbImpl) CreateBookingEntry(booking dto.Booking) error {
+func (d *dbImpl) CreateBookingEntry(booking dto.Booking) error {
 	result := d.DbController.Create(&booking)
 	return result.Error
 }
 
-func (d*dbImpl) DeleteBookingEntry(booking dto.Booking) error {
+func (d *dbImpl) DeleteBookingEntry(booking dto.Booking) error {
 	results := d.DbController.Delete(&booking)
 	if results.RowsAffected == 0 {
 		return fmt.Errorf("booking not found")
@@ -43,10 +45,17 @@ func (d*dbImpl) DeleteBookingEntry(booking dto.Booking) error {
 	return results.Error
 }
 
-func (d*dbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
+func (d *dbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
 	var existingBooking []dto.Booking
 
 	results := d.DbController.Find(&existingBooking, "email = ?", email)
+	return existingBooking, results.Error
+}
+
+func (d *dbImpl) GetBookingIdEntry(id uint) (dto.Booking, error) {
+	var existingBooking dto.Booking
+
+	results := d.DbController.First(&existingBooking, "id = ?", id)
 	return existingBooking, results.Error
 }
 
