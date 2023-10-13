@@ -142,7 +142,7 @@ func GetBookingIdHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, booking)
+	c.JSON(http.StatusOK, []dto.Booking{booking})
 	return
 }
 
