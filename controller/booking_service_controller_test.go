@@ -21,7 +21,7 @@ func TestCreateBookingSuccess(t *testing.T) {
 			ChargerId: 1,
 			Email:     "example@example.com",
 			StartTime: time.Now().Add(time.Minute),
-			EndTime:   time.Now().Add(15*time.Minute),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
@@ -46,7 +46,7 @@ func TestCreateBookingThatOverlaps(t *testing.T) {
 			ChargerId: 1,
 			Email:     "example@example.com",
 			StartTime: time.Now().Add(time.Minute),
-			EndTime:   time.Now().Add(15*time.Minute),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
@@ -65,7 +65,7 @@ func TestCreateBookingWhereStartTimeAfterEndTime(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Now().Add(time.Minute).Add(15*time.Minute),
+			StartTime: time.Now().Add(time.Minute).Add(15 * time.Minute),
 			EndTime:   time.Now(),
 			Status:    "",
 		}
@@ -85,8 +85,8 @@ func TestCreateBookingWhereStartTimeBeforeCurrentTime(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
-			EndTime:   time.Now().Add(15*time.Minute),
+			StartTime: time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
@@ -97,7 +97,7 @@ func TestCreateBookingWhereStartTimeBeforeCurrentTime(t *testing.T) {
 	dao.Db = dao.NewMockDatabase([]dto.Booking{actualBooking})
 	time.Sleep(time.Second)
 	err := BookingControllerObj.CreateBooking(actualBooking, user)
-	assert.Equal(t, err, fmt.Errorf("start time cannot be before current time"))
+	assert.Equal(t, err, fmt.Errorf("start time cannot be after end time or equal to end time. "))
 }
 
 func TestGetBookingWhereUserDoesNotHaveBooking(t *testing.T) {
@@ -106,8 +106,8 @@ func TestGetBookingWhereUserDoesNotHaveBooking(t *testing.T) {
 		actualBooking = dto.Booking{
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
-			EndTime:   time.Now().Add(15*time.Minute),
+			StartTime: time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
@@ -126,11 +126,11 @@ func TestUpdateBookingSuccess(t *testing.T) {
 	setup()
 	var (
 		actualBooking = dto.Booking{
-			ID: 0,
+			ID:        0,
 			ChargerId: 1,
 			Email:     "example@example.com",
 			StartTime: time.Now().Add(time.Minute),
-			EndTime:   time.Now().Add(15*time.Minute),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
@@ -140,8 +140,8 @@ func TestUpdateBookingSuccess(t *testing.T) {
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Booking{actualBooking})
 	time.Sleep(time.Second)
-	actualBooking.StartTime = time.Now().Add(15*time.Minute)
-	actualBooking.EndTime = time.Now().Add(30*time.Minute)
+	actualBooking.StartTime = time.Now().Add(15 * time.Minute)
+	actualBooking.EndTime = time.Now().Add(30 * time.Minute)
 	err := BookingControllerObj.UpdateBooking(actualBooking)
 	assert.Nil(t, err)
 	expectedBooking, err := BookingControllerObj.GetBookingInfo(user)
@@ -153,38 +153,38 @@ func TestUpdateBookingWhereStartTimeBeforeCurrentTime(t *testing.T) {
 	setup()
 	var (
 		actualBooking = dto.Booking{
-			ID: 0,
+			ID:        0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
-			EndTime:   time.Now().Add(15*time.Minute),
+			StartTime: time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Booking{actualBooking})
 	time.Sleep(time.Second)
-	actualBooking.StartTime = time.Date(2022,8,27,10,50,0, 0,time.Local)
-	actualBooking.EndTime = time.Now().Add(30*time.Minute)
+	actualBooking.StartTime = time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local)
+	actualBooking.EndTime = time.Now().Add(30 * time.Minute)
 	err := BookingControllerObj.UpdateBooking(actualBooking)
-	assert.Equal(t, err, fmt.Errorf("start time cannot be before current time"))
+	assert.Equal(t, err, fmt.Errorf("start time cannot be after end time or equal to end time. "))
 }
 
 func TestUpdateBookingWhereEndTimeBeforeStartTime(t *testing.T) {
 	setup()
 	var (
 		actualBooking = dto.Booking{
-			ID: 0,
+			ID:        0,
 			ChargerId: 1,
 			Email:     "example@example.com",
 			StartTime: time.Now(),
-			EndTime:   time.Now().Add(15*time.Minute),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Booking{actualBooking})
 	time.Sleep(time.Second)
 
-	actualBooking.StartTime = time.Now().Add(30*time.Minute)
+	actualBooking.StartTime = time.Now().Add(30 * time.Minute)
 	actualBooking.EndTime = time.Now()
 	err := BookingControllerObj.UpdateBooking(actualBooking)
 	assert.Equal(t, err, fmt.Errorf("start time cannot be after end time"))
@@ -194,11 +194,11 @@ func TestUpdateBookingWhereEndTimeBeforeCurrentTime(t *testing.T) {
 	setup()
 	var (
 		actualBooking = dto.Booking{
-			ID: 0,
+			ID:        0,
 			ChargerId: 1,
 			Email:     "example@example.com",
-			StartTime: time.Date(2022,8,27,10,50,0, 0,time.Local),
-			EndTime:   time.Now().Add(15*time.Minute),
+			StartTime: time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 	)
@@ -206,7 +206,7 @@ func TestUpdateBookingWhereEndTimeBeforeCurrentTime(t *testing.T) {
 	time.Sleep(time.Second)
 
 	actualBooking.StartTime = time.Now()
-	actualBooking.EndTime = time.Date(2022,8,27,10,50,0, 0,time.Local)
+	actualBooking.EndTime = time.Date(2022, 8, 27, 10, 50, 0, 0, time.Local)
 	err := BookingControllerObj.UpdateBooking(actualBooking)
 	assert.Equal(t, err, fmt.Errorf("end time cannot be before current time"))
 }
@@ -215,11 +215,11 @@ func TestDeleteBookingSuccess(t *testing.T) {
 	setup()
 	var (
 		actualBooking = dto.Booking{
-			ID: 0,
+			ID:        0,
 			ChargerId: 1,
 			Email:     "example@example.com",
 			StartTime: time.Now().Add(time.Minute),
-			EndTime:   time.Now().Add(15*time.Minute),
+			EndTime:   time.Now().Add(15 * time.Minute),
 			Status:    "",
 		}
 		user = userDto.User{
