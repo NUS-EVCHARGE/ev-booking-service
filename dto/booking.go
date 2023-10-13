@@ -26,8 +26,8 @@ func (b *Booking) Validate() error {
 	if b.EndTime.Unix() < time.Now().Unix() {
 		return fmt.Errorf("end time cannot be before current time")
 	}
-	if b.StartTime.Unix() > b.EndTime.Unix() {
-		return fmt.Errorf("start time cannot be after end time")
+	if b.StartTime.Unix() >= b.EndTime.Unix() {
+		return fmt.Errorf("start time cannot be after end time or equal to end time. ")
 	}
 	return nil
 }
