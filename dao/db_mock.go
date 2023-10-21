@@ -35,7 +35,7 @@ func (d *mockDbImpl) DeleteBookingEntry(booking dto.Booking) error {
 	return nil
 }
 
-func (d *mockDbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
+func (d *mockDbImpl) GetBookingEntryByUser(email string) ([]dto.Booking, error) {
 	var (
 		bookingList []dto.Booking
 	)
@@ -45,6 +45,10 @@ func (d *mockDbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
 		}
 	}
 	return bookingList, nil
+}
+
+func (d *mockDbImpl) GetAllBookingEntry() ([]dto.Booking, error) {
+	return d.bookingList, nil
 }
 
 func (d *mockDbImpl) GetBookingIdEntry(id uint) (dto.Booking, error) {

@@ -99,6 +99,7 @@ func registerHandler() {
 	// get user info handler
 	v1.POST("/booking", handler.CreateBookingHandler)
 	v1.GET("/booking", handler.GetBookingHandler)
+	v1.GET("/all-booking", handler.GetAllBookingHandler)
 	v1.PATCH("/booking/", handler.UpdateBookingHandler)
 	v1.DELETE("/booking/:id", handler.DeleteBookingHandler)
 	v1.GET("/booking/:id", handler.GetBookingIdHandler)

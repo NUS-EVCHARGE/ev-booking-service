@@ -11,7 +11,8 @@ type Database interface {
 	CreateBookingEntry(booking dto.Booking) error
 	UpdateBookingEntry(booking dto.Booking) error
 	DeleteBookingEntry(booking dto.Booking) error
-	GetAllBookingEntry(email string) ([]dto.Booking, error)
+	GetBookingEntryByUser(email string) ([]dto.Booking, error)
+	GetAllBookingEntry() ([]dto.Booking, error)
 	GetBookingIdEntry(id uint) (dto.Booking, error)
 }
 
@@ -45,10 +46,18 @@ func (d *dbImpl) DeleteBookingEntry(booking dto.Booking) error {
 	return results.Error
 }
 
-func (d *dbImpl) GetAllBookingEntry(email string) ([]dto.Booking, error) {
+func (d *dbImpl) GetBookingEntryByUser(email string) ([]dto.Booking, error) {
 	var existingBooking []dto.Booking
 
 	results := d.DbController.Find(&existingBooking, "email = ?", email)
+	return existingBooking, results.Error
+}
+
+
+func (d *dbImpl) GetAllBookingEntry() ([]dto.Booking, error) {
+	var existingBooking []dto.Booking
+
+	results := d.DbController.Find(&existingBooking)
 	return existingBooking, results.Error
 }
 
