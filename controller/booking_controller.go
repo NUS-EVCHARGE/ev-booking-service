@@ -10,6 +10,7 @@ import (
 type BookingController interface {
 	CreateBooking(booking dto.Booking, user evu.User) error
 	GetBookingInfo(user evu.User) ([]dto.Booking, error)
+	GetAllBooking() ([]dto.Booking, error)
 	GetBookingIdInfo(bookingId uint) (dto.Booking, error)
 	UpdateBooking(booking dto.Booking) error
 	DeleteBooking(bookingId uint, email string) error
@@ -38,7 +39,11 @@ func (b *BookingControllerImpl) CreateBooking(newBooking dto.Booking, user evu.U
 }
 
 func (b *BookingControllerImpl) GetBookingInfo(user evu.User) ([]dto.Booking, error) {
-	return dao.Db.GetAllBookingEntry(user.Email)
+	return dao.Db.GetBookingEntryByUser(user.Email)
+}
+
+func (b *BookingControllerImpl) GetAllBooking() ([]dto.Booking, error) {
+	return dao.Db.GetAllBookingEntry()
 }
 
 func (b *BookingControllerImpl) GetBookingIdInfo(bookingId uint) (dto.Booking, error) {

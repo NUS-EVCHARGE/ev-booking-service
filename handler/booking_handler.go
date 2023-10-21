@@ -105,6 +105,40 @@ func GetBookingHandler(c *gin.Context) {
 	return
 }
 
+// @Summary		Get Booking by user
+// @Description	get booking by user
+// @Tags			booking
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Booking	"returns a booking object"
+// @Router			/booking [get]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+func GetAllBookingHandler(c *gin.Context) {
+	var (
+		bookingList []dto.Booking
+	)
+	tokenStr := c.GetHeader("Authentication")
+
+	// Get User information
+	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	bookingList, err = controller.BookingControllerObj.GetAllBooking()
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting booking")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+	c.JSON(http.StatusOK, bookingList)
+	return
+}
+
 // @Summary		Get Booking info by id
 // @Description	get booking info by id
 // @Tags			booking
