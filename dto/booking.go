@@ -2,6 +2,7 @@ package dto
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"time"
 )
 
@@ -20,6 +21,9 @@ func (Booking) TableName() string {
 }
 
 func (b *Booking) Validate() error {
+	logrus.WithField("start_time", b.StartTime)
+	logrus.WithField("end_time", b.EndTime)
+	logrus.WithField("current_time", time.Now())
 	if b.StartTime.Unix() < time.Now().Unix() {
 		return fmt.Errorf("start time cannot be before current time")
 	}
