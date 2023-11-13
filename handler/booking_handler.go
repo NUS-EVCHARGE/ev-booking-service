@@ -70,8 +70,8 @@ func CreateBookingHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Get Booking by user
-// @Description	get booking by user
+// @Summary		Get All Bookings by user
+// @Description	get all bookings by user
 // @Tags			booking
 // @Accept			json
 // @Produce		json
@@ -105,8 +105,8 @@ func GetBookingHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Get Booking by user
-// @Description	get booking by user
+// @Summary		Get All Bookings by user
+// @Description	get all bookings by user
 // @Tags			booking
 // @Accept			json
 // @Produce		json
@@ -145,7 +145,7 @@ func GetAllBookingHandler(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Booking	"returns a booking object"
-// @Router			/booking [get]
+// @Router			/booking/{id} [get]
 // @Param			authentication	header	string	yes	"jwtToken of the user"
 func GetBookingIdHandler(c *gin.Context) {
 	var (
@@ -180,13 +180,13 @@ func GetBookingIdHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Create Booking by user
-// @Description	create booking by user
+// @Summary		Update Booking by booking id
+// @Description	Update booking by booking id
 // @Tags			booking
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Booking	"returns a booking object"
-// @Router			/booking [patch]
+// @Router			/booking/{id} [patch]
 // @Param			authentication	header	string	yes	"jwtToken of the user"
 func UpdateBookingHandler(c *gin.Context) {
 	var (
@@ -222,13 +222,13 @@ func UpdateBookingHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Create Booking by user
-// @Description	create booking by user
+// @Summary		Delete Booking by booking id
+// @Description	Delete booking by booking id
 // @Tags			booking
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Booking	"returns a booking object"
-// @Router			/booking [delete]
+// @Router			/booking/{id} [delete]
 // @Param			authentication	header	string	yes		"jwtToken of the user"
 // @Param			id				path	int		true	"booking id"
 func DeleteBookingHandler(c *gin.Context) {

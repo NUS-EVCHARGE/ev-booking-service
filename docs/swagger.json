@@ -12,7 +12,7 @@
     "paths": {
         "/booking": {
             "get": {
-                "description": "get booking by user",
+                "description": "get all bookings by user",
                 "consumes": [
                     "application/json"
                 ],
@@ -22,7 +22,7 @@
                 "tags": [
                     "booking"
                 ],
-                "summary": "Get Booking by user",
+                "summary": "Get All Bookings by user",
                 "parameters": [
                     {
                         "type": "string",
@@ -68,9 +68,11 @@
                         }
                     }
                 }
-            },
-            "patch": {
-                "description": "create booking by user",
+            }
+        },
+        "/booking/{id}": {
+            "get": {
+                "description": "get booking info by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -80,7 +82,7 @@
                 "tags": [
                     "booking"
                 ],
-                "summary": "Create Booking by user",
+                "summary": "Get Booking info by id",
                 "parameters": [
                     {
                         "type": "string",
@@ -97,11 +99,9 @@
                         }
                     }
                 }
-            }
-        },
-        "/booking/create_booking": {
+            },
             "delete": {
-                "description": "create booking by user",
+                "description": "Delete booking by booking id",
                 "consumes": [
                     "application/json"
                 ],
@@ -111,7 +111,7 @@
                 "tags": [
                     "booking"
                 ],
-                "summary": "Create Booking by user",
+                "summary": "Delete Booking by booking id",
                 "parameters": [
                     {
                         "type": "string",
@@ -125,6 +125,35 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update booking by booking id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Update Booking by booking id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
                     }
                 ],
                 "responses": {

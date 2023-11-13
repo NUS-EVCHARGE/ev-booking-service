@@ -25,7 +25,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get booking by user
+      description: get all bookings by user
       parameters:
       - description: jwtToken of the user
         in: header
@@ -38,26 +38,7 @@ paths:
           description: returns a booking object
           schema:
             $ref: '#/definitions/dto.Booking'
-      summary: Get Booking by user
-      tags:
-      - booking
-    patch:
-      consumes:
-      - application/json
-      description: create booking by user
-      parameters:
-      - description: jwtToken of the user
-        in: header
-        name: authentication
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: returns a booking object
-          schema:
-            $ref: '#/definitions/dto.Booking'
-      summary: Create Booking by user
+      summary: Get All Bookings by user
       tags:
       - booking
     post:
@@ -79,11 +60,11 @@ paths:
       summary: Create Booking by user
       tags:
       - booking
-  /booking/create_booking:
+  /booking/{id}:
     delete:
       consumes:
       - application/json
-      description: create booking by user
+      description: Delete booking by booking id
       parameters:
       - description: jwtToken of the user
         in: header
@@ -101,7 +82,45 @@ paths:
           description: returns a booking object
           schema:
             $ref: '#/definitions/dto.Booking'
-      summary: Create Booking by user
+      summary: Delete Booking by booking id
+      tags:
+      - booking
+    get:
+      consumes:
+      - application/json
+      description: get booking info by id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Get Booking info by id
+      tags:
+      - booking
+    patch:
+      consumes:
+      - application/json
+      description: Update booking by booking id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Update Booking by booking id
       tags:
       - booking
 schemes:
