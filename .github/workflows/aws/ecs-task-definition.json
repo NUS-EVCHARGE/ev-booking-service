@@ -20,7 +20,7 @@
       "secrets": [
         {
           "name": "MYSQL_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:021983356533:secret:rds!db-8ff5565a-53f0-4c4d-9253-1d2562a6d07e-OZBnLX"
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:021983356533:secret:rds!db-13b40ad9-4842-4e8d-8036-60939fbea5df-2GC46O"
         }
       ],
       "logConfiguration": {
